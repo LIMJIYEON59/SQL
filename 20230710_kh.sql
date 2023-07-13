@@ -210,6 +210,114 @@ where salary in (selact max(salary) from employee group by dept_code); --부서 
 order by 3; --부서 별 최고 급여를 받는 사람을 조회하는거니 그걸 기준으로 묶었나?
 
 
+select * from EMPLOYEE;
+select * from DEPARTMENT;
+select * from JOB;
+select * from LOCATION;
+select * from SAL_GRADE;
+
+--<join>
+select emp_id, emp_name, dept_code
+from employee;
+select dept_id, dept_title
+from department;
+
+--from절에 합치게 될 테이블을 ,(쉼표)로 구분해서 적는다.
+--그리고 where절에 합쳐질 컬럼명을 적는다. (=)
+select emp_id, emp_name, dept_code, dept_title
+from employee, department
+where dept_code = dept_id;
+
+--employee 테이블과 job 테이블의 job_code를 합친다.
+select emp_id, emp_name, employee.job_code, job_name
+from employee, job --를 합칠거다.
+where employee.job_code = job.job_code;
+
+--테이블 별칭 이용 가능 (select은 앞에 from은 뒤에)
+select emp_id, emp_name, e.job_code, job_name
+from employee e, job j
+where e.job_code = j.job_code;
+
+--<ANSI> 연결할 컬럼 명이 같은 경우 USING() 사용 다른 경우 ON()사용
+select emp_id, emp_name, job_code,job_name
+from employee
+join job using(job_code); --연결할 테이블 쓰고 같으니 using(같은 컬럼 명)
+
+--연결할 컬럼 명이 다를 경우 on()사용
+select emp_id, emp_name, dept_code, dept_title
+from employee
+join department on(dept_code = dept_id);
+
+--inner join과 outer join
+-- 기본값-= inner join: 두 개 이상 테이블 조인 시 일치 하는 값이 없는 행은 조인에서 제외
+-- outer join: 일치하지 않은 값도 포함. 반드시 outer join명시
+select emp_name, dept_title
+from employee
+join department on (dept_code =dept_id);
+
+select emp_name, dept_title --이게 결과값이 표시되고
+from employee 
+left join department on (dept_code = dept_id);
+
+--cross join(카테시안 곱, cartesian product)
+--행의 컬럼 수 전체가 다 나온다?
+select emp_name, dept_title
+from employee
+cross join department;
+
+--<non_equ join>
+select emp_name, salary, e.sal_level
+from employee e
+join sal_grade s on (salary between min_sal and max_sal);
+--s에 있는 sal_grede (salary에 있는 between 작은넘 and 큰넘 다 보여줘)
+
+--<self join> : 두 개이상 서로 다른 테이블이 아닌 같은 테이블 조인하는 것
+select e.emp_id, e.emp_name 사원이름, e.dept_code, e.manager_id, m.emp_name 관리자이름
+from employee e, employee m
+where e.manager_id = m.emp_id;
+
+--<다중 join>??
+select * from LOCATION;
+select emp_id, emp_name, dept_code, dept_title, local_name
+from employee
+join department on (dept_code = dept_id)
+join location on (location_id = local_code);
+
+-- --------------------------------------------------
+--ppt 6 DDL
+
+--<create>:테이블이나 인덱스, 뷰 등 데이터베이스 객체를 생성하는 구문
+create table member(    
+    member_id varchar2(20), --varchar2(크기,길이):문자 데이터 최대 4,000 byte!
+    member_pwd varchar2(20),    --컬럼명 자료형(크기)
+    member_name varchar2(20)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
