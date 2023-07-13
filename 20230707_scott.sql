@@ -333,7 +333,66 @@ create table t1( c1 char(5), c2 varchar2(5));
 desc t1;
 desc emp;
 
---dhodfhdsgljkfgljkljkfsdgljk;fdkp
+--2023-713
+create table emp_copy1 as select * from emp;
+select * from emp_copy1;
+create view view_emp1 as select * from emp;
+select * from view_emp1;
+desc emp;
+insert into emp values(8000, 'EJKIM', 'KH', 7788, sysdate, 3000, 700, 40); --순서대로 넣어줘야한다.
+commit; --insert한 다음에는 꼭 커밋 해줘야한다.
+insert into emp_copy1 values(8001, 'EJ1', 'KH', 7788, sysdate, 3000, 700, 40);
+commit;
+insert into view_emp1 values(8002, 'EJ2', 'KH', 7788, sysdate, 3000, 700, 40);
+commit;
+create table emp_copy20 as
+select empno, ename 사원명, job, hiredate, sal
+from emp
+where deptno=20
+;
+desc emp;
+desc emp_copy20;
+select * from user_constraints;
+
+desc emp;
+--insert into emp (컬럼명1, 컬럼명2,...) values(값1, 값2ㅣ...)
+insert into emp (ename, empno, job, mgr, hiredate. deptno)
+    values ('EJK', 8003, 'T', 7788, sysdate, 40);
+select * from emp;
+insert into emp (ename, empno, job, mgr, hiredate. deptno)
+    values ('EJK2', 8004, 'F', null, to_date('2023-07-12','yyyy-mm-dd'), 40);
+commit;
+update emp --테이블 먼저 (emp)
+    set mar=7788
+    where ename='EJL2'
+;
+    -- uodate 명령문의 where절에는 컬럼명 PK=값
+    -- where절에는 컬럼명 PK- 값 ==> resultser 은 단일행
+    
+--20번 부서가
+rollback;
+select * from emp;
+--30번 부서의 mgr가 smith 7908로 조직개편
+update emp 
+    set mgr=7908
+    where deptno=30
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
