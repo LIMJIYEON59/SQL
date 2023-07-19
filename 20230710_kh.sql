@@ -557,16 +557,43 @@ SELECT * FROM EMPLOYEE
 create synonym emp for employee;
 select * from emp;
 
--- GROUP BY :여러 개의 결과 값을 산출하기 위해 
+-- 20230717
+-- GROUP BY 꼭 지켜져야 하는 룰 : GROUP BY 컬럼명, 컬럼명 만 SELECT로 선택 가능
+SELECT JOB_CODE, SUM(SALARY)SUMSAL, COUNT(*) CNT -- 함수는 별칭을 적어줘야 한다.
+FROM EMPLOYEE 
+GROUP BY JOB_CODE
+ORDER BY 1;
 
+-- <ROLLUP과 CUBE>: 그룹 별 산출한 결과 값의 집계를 계산하는 함수, 집계(전체)
+-- 차이점: ROLLUP은 순차적으로 중간 합계 출력, 컬럼의 순서가 바뀌면 결과도 바뀜
+        --CUBE는 모든 중간합계를 출력한다.
+-- ROLLUP
+SELECT JOB_CODE, SUM(SALARY)
+FROM EMPLOYEE
+GROUP BY ROLLUP(JOB_CODE)
+ORDER BY 1; -- =>JOB_CODE를 기준 SUM의 전체값을 나타낸다? ->가장 먼저 지정한 그룹
 
+-- 먼저 지정한 그룹별로 추가적 집계 결과를 반환 시킨다.
+SELECT DEPT_CODE, JOB_CODE, SUM(SALARY)
+FROM EMPLOYEE
+GROUP BY ROLLUP(DEPT_CODE,JOB_CODE)
+ORDER BY 1;
 
+-- CUBE: 인자로 지정된 그룹들로 가능한 모든 조합 별로 집계한 결과 반환
+SELECT JOB_CODE, SUM(SALARY)
+FROM EMPLOYEE
+GROUP BY CUBE(JOB_CODE)
+ORDER BY 1;
 
+SELECT DEPT_CODE,JOB_CODE, SUM(SALARY)
+FROM EMPLOYEE
+GROUP BY CUBE(DEPT_CODE,JOB_CODE)
+ORDER BY 1;
 
-
-
-
-
+-- ROLLUP과 CUBE
+SELECT DEPT_CODE, JOB_CODE, SUM(SALARY)
+FROM EMPLOYEE
+GROUP BY ROLLUP(DEPT_CODE, JOB_CODE);
 
 
 
