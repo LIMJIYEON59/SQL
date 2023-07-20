@@ -864,9 +864,20 @@ SELECT ENAME, DEPTNO, SAL
 FROM EMP
 ORDER BY DEPTNO;
 
+-- <창 띄우기 PL/SQL>
+DESC DEPT;
+SELECT * 
+FROM DEPT;
+INSERT INTO DEPT VALUES(10, 'ACCOUNT', 'NEW YORK');
+INSERT INTO DEPT VALUES('&DEPTNO', '&부서명', '&지역');
+-- '&DEPTNO값을 넣어주세요' 띄어쓰기 전까지만 나타남
+COMMIT;
 
-
-
+SELECT * FROM EMP
+    WHERE ENAME LIKE '%'
+    -- ENAME = '%SMITH'
+    ;
+-- 
 
 
 
