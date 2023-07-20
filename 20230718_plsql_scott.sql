@@ -159,16 +159,127 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('EMP_NAME : ' || EMP_NAME);
 END; --그러면 DBMS에 888이랑 배장남이 출력된다.
 /
-
--- 구구단
+-------------------------------------------------------
+-- 구구단 
+-- 정수를 입력받아서 해당 구구단을 출력하는 프로그램을 작성하시오
+ACCEPT pno PROMPT '몇단?'
 DECLARE
-    VN_BASE_NUM
-
+  vno NUMBER:=&pno;
 BEGIN
-FOR | ID
+    FOR i IN 1..9 LOOP
+      DBMS_OUTPUT.PUT_LINE(vno||'*'||i||'='||vno*i);
+    END LOOP;
+END;
+/
+
+-- 반복문 (LOOP문, WHILE문, FOR문)
 
 
+-- FOR LOOP
+-- 1~5까지 숫자 출력하기
+BEGIN 
+    FOR N IN 1..5 
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(N);
+        END LOOP;
+END;
+/
+-- 5~10까지 숫자 출력하기
+BEGIN 
+    FOR J IN 5..10
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(J);
+        END LOOP;
+END;
+/
+-- 5~1까지 숫자 출력하기(REVERSE 사용)
+BEGIN 
+    FOR N IN REVERSE 1..5 
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(N);
+        END LOOP;
+END;
+/
+        
+-- IF ~ THEN ~ END IF
+-- IF ~ THEN ~ ELSE ~ END IF
+-- IF ~ THEN ~ ELSIF ~ ELSE ~ END IF
 
+-- 반복문 
+-- LOOP, FOR LOOP, WHILE LOOP
+
+-- <TRIGGER>
+-- 테이블이나 뷰가 INSERT, UPDATE, DELETE 등의 DML문에 의해 변결될
+    --경우 자동으로 실행될 내용을 정의하여 저장
+CREATE OR REPLACE TRIGGER TRG_01
+AFTER INSERT
+ON EMPLOYEE
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('신입사원이 입사했습니다.');
+END;
+/
+INSERT INTO EMPLOYEE VALUES(905, '길성춘', '690512-1151432',
+                            'gil_sj@kh.or.kr', '01035464455', 'D5', 'J3',
+                            'S5', 3000000, 0.1, 200, SYSDATE, NULL,
+                            DEFAULT);
+
+CREATE TABLE PRODUCT(
+
+PCODE NUMBER PRIMARY KEY,
+PNAME VARCHAR2(30),
+BRAND VARCHAR2(30),
+PRICE NUMBER,
+STOCK NUMBER DEFAULT 0
+
+);
+CREATE TABLE PRO_DETAIL(
+
+DCODE NUMBER PRIMARY KEY,
+PCODE NUMBER,
+PDATE DATE,
+AMOUNT NUMBER,
+STATUS VARCHAR2(10) CHECK (STATUS IN ('입고', '출고')),
+FOREIGN KEY (PCODE) REFERENCES PRODUCT(PCODE)
+
+);
+
+CREATE SEQUENCE SEQ_PCODE;
+CREATE SEQUENCE SEQ_DCODE;
+
+INSERT INTO PRODUCT
+VALUES(SEQ_PCODE.NEXTVAL, '갤럭스노트8', '삼송', 900000, DEFAULT);
+INSERT INTO PRODUCT
+VALUES(SEQ_PCODE.NEXTVAL, '아이뽀8', '사과', 1000000, DEFAULT);
+INSERT INTO PRODUCT
+VALUES(SEQ_PCODE.NEXTVAL, '대륙폰', '샤우미', 600000, DEFAULT);
+
+-- 예시1
+CREATE OR REPLACE TRIGGER TGR_02 --트리거명
+AFTER INSERT ON PRO_DETAIL --테이블명
+    --INSERT는 한번밖에 실행안되는데 여기서는 3번?실행됨?)
+    FOR EACH ROW
+        BEGIN
+            IF :NEW.STATUS = '입고'
+            THEN
+                UPDATE PRODUCT SET STOCK = STOCK + :NEW.AMOUNT
+                -- UPDATE는 하나만 UPPDATE 되는게 아니다/
+                WHERE PCODE = :NEW.PCODE;
+            END IF;
+            
+            IF :NEW.STATUS = '출고'
+            THEN 
+                UPDATE PRODUCT SET STOCK = STOCK - :NEW.AMOUNT
+                WHERE PCODE = :NEW.PCODE;
+            END IF;
+END;
+/
+
+INSERT INTO PRO_DETAIL VALUES (SEQ_DCODE.NEXTVAL,1, SYSDATE, 5, '입고');
+INSERT INTO PRO_DETAIL VALUES (SEQ_DCODE.NEXTVAL,2, SYSDATE, 10, '입고');
+INSERT INTO PRO_DETAIL VALUES (SEQ_DCODE.NEXTVAL,3, SYSDATE, 20, '입고');
+INSERT INTO PRO_DETAIL VALUES (SEQ_DCODE.NEXTVAL,1, SYSDATE, 1, '출고');
+INSERT INTO PRO_DETAIL VALUES (SEQ_DCODE.NEXTVAL,2, SYSDATE, 7, '출고');
+INSERT INTO PRO_DETAIL VALUES (SEQ_DCODE.NEXTVAL,3, SYSDATE, 11, '출고');
 
 
 
