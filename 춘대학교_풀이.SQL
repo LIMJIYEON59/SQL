@@ -1,0 +1,79 @@
+-- 3-18
+SELECT TB2. * FROM
+(
+SELECT ROWNUM RN, TB1. * FROM
+(
+SELECT STUDENT_NAME, AVG(POINT) AVGPOINT
+--국어 국문과 학생들만 뽑고싶다.
+    FROM ( 
+     --국어국문과 학생들만 뽑아줌
+     SELECT * FROM TB_STUDENT WHERE DEPARTMENT_NO = 
+                            (SELECT DEPARTMENT_NO FROM TB_DEPARTMENT 
+                            WHERE DEPARTMENT_NAME='국어국문학과')
+                            -- 국문의 넘버만 추출하면 된다.
+    ) S
+    --평점을 나타내야 하니 JOIN을 한다.
+      JOIN TB_GRADE G USING (STUDENT_NO)
+      GROUP BY STUDENT_NO, STUDENT_NAME
+      ORDER BY AVGPOINT DESC
+) TB1  -- 묶어줌 
+) TB2
+WHERE RN = 1
+-- WHERE ROWNUM <= 3 --극히 제한적임(잘 안나오는게 많음)
+-- 그래서 TB2로 한번 더 묶어주고 밑에 WHERE RN = //이래 쓰면 안정적
+;
+
+-- <04-KH-JOIN-10>
+-- 10.보너스 포함한 연봉이 높은 5명의 사번, 이름, 부서 명, 직급, 입사일, 순위 조회
+SELECT TB2.* FROM
+(
+SELECT TB1.*, ROWNUM RN FROM 
+(
+SELECT EMP_ID,EMP_NAME,(SELECT DEPT_TITLE FROM DEPARTMENT D WHERE DEPT_ID = E.DEPT_CODE) "부서 명", JOB_CODE, HIRE_DATE, SALARY*12+ (SALARY*12*NVL(BONUS,0)) SAL_RANK
+FROM EMPLOYEE E
+    ORDER BY SAL_RANK DESC
+)TB1
+)TB2
+WHERE RN <=5
+;
+
+-- 보너스를 포함한 연봉
+SELECT EMP_ID, SALARY*12+ (SALARY*12*NVL(BONUS,0)) SAL_RANK FROM EMPLOYEE ORDER BY SAL_RANK DESC;
+SELECT DECODE(BONUS,NULL, 0, BONUS) BONUS FROM EMPLOYEE;
+SELECT * FROM EMPLOYEE;
+SELECT * FROM DEPARTMENT;
+-- 입사일 순서가 빠른 사람 3명을 조회해 주세요.
+ SELECT * FROM
+(  
+SELECT ROWNUM RN, TB1.*FROM
+(
+SELECT * FROM EMPLOYEE ORDER BY HIRE_DATE ASC
+) TB1
+)
+WHERE RN <=3
+;
+-- 방법2 간단하게
+SELECT TB1.* FROM
+(
+SELECT * FROM EMPLOYEE ORDER BY HIRE_DATE ASC
+)TB1
+WHERE ROWNUM <=3
+;
+--춘대학교 2번 14번문항 HAVING COUNT(*) > 2 / 5번 16번
+--
+
+
+
+
+
+
+
+
+
+
+
+                        
+
+
+
+
