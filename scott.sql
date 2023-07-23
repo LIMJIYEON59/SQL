@@ -26,7 +26,7 @@ rem OATES:     Created: 16-Feb-83
 --ALTER USER SCOTT TEMPORARY TABLESPACE TEMP;
 --CONNECT SCOTT/TIGER
 
--- table은 드랍순서가 있다(그래서 DROP끼리 묶어 주는게 좋다)
+-- table은 드랍순서가 있다(그래서 DROP끼리 묶어 주는게 좋다. 순서 꼭 잘 지켜줘야함)
 -- EMP-FK- DEPT-PK (FK로  DERT이 걸려 있다면 ENO TABLE을 먼저 삭제해야한다.)
 -- 결론: ENP-FK 먼저 삭제하고 DEPT-PK 삭제
 DROP TABLE EMP;
