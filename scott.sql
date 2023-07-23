@@ -1,9 +1,37 @@
+Rem Copyright (c) 1990 by Oracle Corporation
+Rem NAME
+REM    UTLSAMPL.SQL
+Rem  FUNCTION
+Rem  NOTES
+Rem  MODIFIED
+Rem	gdudey	   06/28/95 -  Modified for desktop seed database
+Rem	glumpkin   10/21/92 -  Renamed from SQLBLD.SQL
+Rem	blinden   07/27/92 -  Added primary and foreign keys to EMP and DEPT
+Rem	rlim	   04/29/91 -	      change char to varchar2
+Rem	mmoore	   04/08/91 -	      use unlimited tablespace priv
+Rem	pritto	   04/04/91 -	      change SYSDATE to 13-JUL-87
+Rem   Mendels	 12/07/90 - bug 30123;add to_date calls so language independent
+Rem
+rem
+rem $Header: rdbms/common_nt/sql/scott.sql /main/3 2020/07/20 03:48:35 dgoddard Exp $ sqlbld.sql
+rem
+SET TERMOUT OFF
+SET ECHO OFF
+
+rem CONGDON    Invoked in RDBMS at build time.	 29-DEC-1988
+rem OATES:     Created: 16-Feb-83
+
+--GRANT CONNECT,RESOURCE,UNLIMITED TABLESPACE TO SCOTT IDENTIFIED BY TIGER;
+--ALTER USER SCOTT DEFAULT TABLESPACE USERS;
+--ALTER USER SCOTT TEMPORARY TABLESPACE TEMP;
+--CONNECT SCOTT/TIGER
+
 -- table은 드랍순서가 있다(그래서 DROP끼리 묶어 주는게 좋다)
 -- EMP-FK- DEPT-PK (FK로  DERT이 걸려 있다면 ENO TABLE을 먼저 삭제해야한다.)
--- 결론: ENP-FK 먼저 삭제하고 DEPT-PK 삭제 
--- drop 순서는 create 순서 반대
+-- 결론: ENP-FK 먼저 삭제하고 DEPT-PK 삭제
 DROP TABLE EMP;
 DROP TABLE DEPT;
+
 --얘네들은 포링?키가 없어서 언제든지 삭제된다.(따로 삭제할 필요가 없다)
 DROP TABLE BONUS;
 DROP TABLE SALGRADE;
@@ -33,19 +61,19 @@ INSERT INTO DEPT VALUES (20,'RESEARCH','DALLAS');
 INSERT INTO DEPT VALUES (30,'SALES','CHICAGO');
 INSERT INTO DEPT VALUES (40,'OPERATIONS','BOSTON');
 INSERT INTO EMP VALUES(7369,'SMITH','CLERK',7902,to_date('17-12-1980','dd-mm-yyyy'),800,NULL,20);
-INSERT INTO EMP VALUES(7499,'ALLEN','SALESMAN',7698,to_date('20-02-1981','dd-mm-yyyy'),1600,300,30);
-INSERT INTO EMP VALUES(7521,'WARD','SALESMAN',7698,to_date('22-02-1981','dd-mm-yyyy'),1250,500,30);
-INSERT INTO EMP VALUES(7566,'JONES','MANAGER',7839,to_date('02-04-1981','dd-mm-yyyy'),2975,NULL,20);
-INSERT INTO EMP VALUES(7654,'MARTIN','SALESMAN',7698,to_date('28-09-1981','dd-mm-yyyy'),1250,1400,30);
-INSERT INTO EMP VALUES(7698,'BLAKE','MANAGER',7839,to_date('01-05-1981','dd-mm-yyyy'),2850,NULL,30);
-INSERT INTO EMP VALUES(7782,'CLARK','MANAGER',7839,to_date('09-06-1981','dd-mm-yyyy'),2450,NULL,10);
-INSERT INTO EMP VALUES(7788,'SCOTT','ANALYST',7566,to_date('13-07-87','dd-mm-yyyy'),3000,NULL,20);
+INSERT INTO EMP VALUES(7499,'ALLEN','SALESMAN',7698,to_date('20-2-1981','dd-mm-yyyy'),1600,300,30);
+INSERT INTO EMP VALUES(7521,'WARD','SALESMAN',7698,to_date('22-2-1981','dd-mm-yyyy'),1250,500,30);
+INSERT INTO EMP VALUES(7566,'JONES','MANAGER',7839,to_date('2-4-1981','dd-mm-yyyy'),2975,NULL,20);
+INSERT INTO EMP VALUES(7654,'MARTIN','SALESMAN',7698,to_date('28-9-1981','dd-mm-yyyy'),1250,1400,30);
+INSERT INTO EMP VALUES(7698,'BLAKE','MANAGER',7839,to_date('1-5-1981','dd-mm-yyyy'),2850,NULL,30);
+INSERT INTO EMP VALUES(7782,'CLARK','MANAGER',7839,to_date('9-6-1981','dd-mm-yyyy'),2450,NULL,10);
+INSERT INTO EMP VALUES(7788,'SCOTT','ANALYST',7566,to_date('13-7-87','dd-mm-yyyy'),3000,NULL,20);
 INSERT INTO EMP VALUES(7839,'KING','PRESIDENT',NULL,to_date('17-11-1981','dd-mm-yyyy'),5000,NULL,10);
-INSERT INTO EMP VALUES(7844,'TURNER','SALESMAN',7698,to_date('08-09-1981','dd-mm-yyyy'),1500,0,30);
-INSERT INTO EMP VALUES(7876,'ADAMS','CLERK',7788,to_date('13-07-87','dd-mm-yyyy'),1100,NULL,20);
-INSERT INTO EMP VALUES(7900,'JAMES','CLERK',7698,to_date('03-12-1981','dd-mm-yyyy'),950,NULL,30);
-INSERT INTO EMP VALUES(7902,'FORD','ANALYST',7566,to_date('03-12-1981','dd-mm-yyyy'),3000,NULL,20);
-INSERT INTO EMP VALUES(7934,'MILLER','CLERK',7782,to_date('23-01-1982','dd-mm-yyyy'),1300,NULL,10);
+INSERT INTO EMP VALUES(7844,'TURNER','SALESMAN',7698,to_date('8-9-1981','dd-mm-yyyy'),1500,0,30);
+INSERT INTO EMP VALUES(7876,'ADAMS','CLERK',7788,to_date('13-7-87','dd-mm-yyyy'),1100,NULL,20);
+INSERT INTO EMP VALUES(7900,'JAMES','CLERK',7698,to_date('3-12-1981','dd-mm-yyyy'),950,NULL,30);
+INSERT INTO EMP VALUES(7902,'FORD','ANALYST',7566,to_date('3-12-1981','dd-mm-yyyy'),3000,NULL,20);
+INSERT INTO EMP VALUES(7934,'MILLER','CLERK',7782,to_date('23-1-1982','dd-mm-yyyy'),1300,NULL,10);
 
 CREATE TABLE BONUS
 	(

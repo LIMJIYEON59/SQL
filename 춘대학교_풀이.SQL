@@ -62,17 +62,66 @@ WHERE ROWNUM <=3
 --춘대학교 2번 14번문항 HAVING COUNT(*) > 2 / 5번 16번
 --
 
+--<춘대학교>
+-- 3-2 휴학중인 학생들의 이름과 주민번호 나이가 적은 순
+ --ABSENCE_YN:재학여부 N,Y 
+ --STUDENT_SSN:주민 번호
+SELECT STUDENT_NAME, STUDENT_SSN
+FROM TB_STUDENT
+WHERE ABSENCE_YN = 'Y'
+ORDER BY STUDENT_SSN DESC; --나이가 적은 순이니 주민번호가 큰 순서대로이다.
 
+SELECT *
+FROM TB_STUDENT;
 
+-- 2-14 동명이인 학생의 이름 찾기
+SELECT STUDENT_NAME, COUNT(*)
+FROM TB_STUDENT
+GROUP BY STUDENT_NAME -- 그룹화 해줘야 한다
+HAVING COUNT(STUDENT_NAME) > 1 -- GROUP BY에 대한 조건식을 작성 HAVING에다가! () 컬럼명 넣는다.
+ORDER BY 1; -- 정렬
 
+-- 5- 15 DDL 춘 기술학교는 인기 과목들에 수강 신청이 몰린다 최근 3년 기준으로 수강인원이 가장
+           --많았던 3과목을 찾아라
+-- CREATE VIEW 또는 CREATE OR REPLACE VIEW는 '뷰(VIEW)를 생성해 주는 명령어이다.
+-- CREATE OR REPLACE VIEW: 이미 같은 이름의 뷰를 생성할 경우 걍 덮어쓰기 함
+CREATE OR REPLACE VIEW "VW_인기과목_TOP3"
+    AS SELECT CLASS_NO AS "과목번호", CLASS_NAME AS "과목이름", 
+    COUNT(*) AS "누적수강생수(명)" 
+    FROM TB_GRADE
+    -- USING: 연결하고자 하는 테이블의 컬럼 명이() 같을 경우 쓴다.
+    -- TB_GRADE와 TB_CLASS의 테이블의 CLASS_NO 컬럼명이 같다.
+    JOIN TB_CLASS USING (CLASS_NO)
+    WHERE TERM_NO BETWEEN '2007%' AND '2010%'
+    GROUP BY CLASS_NO, CLASS_NAME
+    ORDER BY 3 DESC
+    FETCH FIRST 3 ROW ONLY;
 
-
-
-
-
-
-
+SELECT * 
+FROM VW_인기과목_TOP3;
                         
+-- 5-15 SELECT 휴학생이 아닌 학생 중 평점이 4.0 이상인 학생을 찾아 그 학생의 학번, 이름, 학과
+    --, 평점을 출력해라
+    -- ROUND(AVG(POINT),3) : 평균 점수가 소수점 3자리까지 나오도록한다 (4번째 자리에서 반올림을해서 .하고 3자리가 나와줘야 한다)
+    SELECT STUDENT_NO, STUDENT_NAME, DEPARTMENT_NAME, ROUND(AVG(POINT),3) AS "평점"
+    FROM TB_STUDENT TS
+    -- LEFT:왼쪽을 기준으로
+    LEFT JOIN TB_DEPARTMENT TD USING (DEPARTMENT_NO)
+    LEFT JOIN TB_GRADE TG USING (STUDENT_NO)
+        -- ABSENCE_YN: 재학여부 'N'과 'Y'로 나뉜다.
+        WHERE ABSENCE_YN = 'N'
+        -- ROUND 빼고 SELECT절꺼 넣어준다.
+        GROUP BY STUDENT_NO, STUDENT_NAME, DEPARTMENT_NAME
+            HAVING AVG(POINT) >= 4.0
+                ORDER BY 1;
+
+SELECT * FROM TB_STUDENT;
+DESC TB_STUDENT;
+
+select * from tb_student;
+
+
+
 
 
 
