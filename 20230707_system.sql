@@ -14,6 +14,30 @@ create user kh identified by kh;
 create user scott identified by tiger;
 drop user soctt;
 
+
+
+--SEMI 수업실습 계정 (영어ㅣ)
+CREATE USER kh1 IDENTIFIED BY kh1;
+grant connect, resource, dba to kh1;
+
+--???공통 사용자 또는 롤 이름이 부적합합니다
+CREATE USER khl IDENTIFIED BY khl;
+
+drop user kh1;
+
+--??
+alter user khl identified by khl;
+alter session set "_oracle_script"=true;
+select sid, serial#, username,status from v$session where username = 'KH1';
+alter system kill SESSION '6,13050';
+
+--final 수업실습 계정
+CREATE USER JY IDENTIFIED BY JY;
+grant connect, resource, dba to khlfinal;
+
+
+
+
 --상태: 실패 -테스트 실패: ORA-01017: 사용자명/비밀번호가 부적합, 로그온할 수 없습니다.
 --상태: 실패 -테스트 실패: ORA-01045: 사용자 SCOTT는 CREATE SESSION 권한을 가지고있지 않음; 로그온이 거절되었습니다
 --계정이 만들어졌지만 SESSION(접속,접근) 권한이 없음 그래서 접속을할 수 있는 권한을 줘야함
