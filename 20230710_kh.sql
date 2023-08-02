@@ -615,6 +615,10 @@ FROM EMPLOYEE;
 SELECT DEPT_ID,DEPT_TITLE
 FROM DEPARTMENT;
 
+select * from tb_student where student_name like '%영%' or student_address like '%영%'
+;
+
+
 
 
 
